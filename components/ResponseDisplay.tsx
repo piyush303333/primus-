@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { CopyToClipboardButton } from './CopyToClipboardButton';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { DownloadResponseButton } from './DownloadResponseButton';
-import { DownloadPdfButton } from './DownloadPdfButton';
 
 interface ResponseDisplayProps {
   prompt: string;
@@ -10,9 +9,6 @@ interface ResponseDisplayProps {
   isLoading: boolean;
   error: string | null;
   onTypingComplete: () => void;
-  onDownloadPdf: () => void;
-  isPdfDownloading: boolean;
-  isPdfDisabled: boolean;
 }
 
 const LoadingSpinner: React.FC = () => (
@@ -25,8 +21,8 @@ const LoadingSpinner: React.FC = () => (
   </div>
 );
 
-const ResponseDisplayComponent: React.ForwardRefRenderFunction<HTMLDivElement, ResponseDisplayProps> = 
-  ({ prompt, response, isLoading, error, onTypingComplete, onDownloadPdf, isPdfDownloading, isPdfDisabled }, ref) => {
+export const ResponseDisplay: React.FC<ResponseDisplayProps> = 
+  ({ prompt, response, isLoading, error, onTypingComplete }) => {
     const { displayText, isFinished } = useTypewriter(response, 20);
 
     useEffect(() => {
@@ -46,7 +42,7 @@ const ResponseDisplayComponent: React.ForwardRefRenderFunction<HTMLDivElement, R
     }
 
     return (
-      <div ref={ref} className="min-h-[200px] space-y-6">
+      <div className="min-h-[200px] space-y-6">
           {prompt && (
             <div className="bg-slate-700/50 p-4 rounded-lg animate-fade-in-up">
                 <h2 className="text-lg font-semibold text-cyan-400 mb-2">Your Prompt</h2>
@@ -68,7 +64,6 @@ const ResponseDisplayComponent: React.ForwardRefRenderFunction<HTMLDivElement, R
               <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center mb-2">
                 <h2 className="text-lg font-semibold text-purple-400">AI Response</h2>
                 <div className="flex items-center space-x-2">
-                  <DownloadPdfButton onClick={onDownloadPdf} isDownloading={isPdfDownloading} disabled={isPdfDisabled} />
                   <DownloadResponseButton textToDownload={response} prompt={prompt} />
                   <CopyToClipboardButton textToCopy={response} />
                 </div>
@@ -82,6 +77,3 @@ const ResponseDisplayComponent: React.ForwardRefRenderFunction<HTMLDivElement, R
       </div>
     );
 };
-
-export const ResponseDisplay = React.forwardRef(ResponseDisplayComponent);
-ResponseDisplay.displayName = 'ResponseDisplay';
