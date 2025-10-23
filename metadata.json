@@ -1,0 +1,5 @@
+{
+  "name": "AI Prompt to PDF",
+  "description": "An intuitive AI tool where users can enter a prompt, receive a response from the Gemini API, and easily download the entire conversation as a high-quality PDF document.",
+  "requestFramePermissions": []
+}
